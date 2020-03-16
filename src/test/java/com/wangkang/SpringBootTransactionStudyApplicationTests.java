@@ -4,11 +4,15 @@ import com.wangkang.mapper.User1Mapper;
 import com.wangkang.mapper.User2Mapper;
 import com.wangkang.service.TransactionPropagationExample;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.contrib.java.lang.system.SystemOutRule;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SpringBootTransactionStudyApplication.class)
@@ -21,6 +25,9 @@ public class SpringBootTransactionStudyApplicationTests {
     User1Mapper user1Mapper;
     @Autowired
     User2Mapper user2Mapper;
+
+    @Rule
+    public final SystemOutRule systemOutRule = new SystemOutRule().enableLog();
 
     @Before
     public void setUpBeforeClass() throws Exception {
@@ -327,7 +334,7 @@ public class SpringBootTransactionStudyApplicationTests {
         }
         assert user1Mapper.count() == 0;
         assert user2Mapper.count() == 1;
-        assert user2Mapper.selectByName("王五").size() == 1;
+        assert user2Mapper.selectByName("王五").size() == 0;
     }
 
     /**
@@ -619,11 +626,11 @@ public class SpringBootTransactionStudyApplicationTests {
     public void testNotransaction_addRequired_getRequired_get() {
         try {
             transactionPropagationExample.notransaction_addRequired_getRequired_get();
-
         } catch (Exception e) {
         }
+        assertThat(systemOutRule.getLog()).contains("getRequired可见");
+        assertThat(systemOutRule.getLog()).contains("get可见");
     }
-
 
     /**
      * 结果：getRequired可见，get可见</br>
@@ -633,9 +640,10 @@ public class SpringBootTransactionStudyApplicationTests {
     public void testTransaction_addRequired_getRequired_get() {
         try {
             transactionPropagationExample.transaction_addRequired_getRequired_get();
-
         } catch (Exception e) {
         }
+        assertThat(systemOutRule.getLog()).contains("getRequired可见");
+        assertThat(systemOutRule.getLog()).contains("get可见");
     }
 
     /**
@@ -646,29 +654,31 @@ public class SpringBootTransactionStudyApplicationTests {
     public void testTransaction_addRequired_getNested_get() {
         try {
             transactionPropagationExample.transaction_addRequired_getNested_get();
-
         } catch (Exception e) {
         }
+        assertThat(systemOutRule.getLog()).contains("getNested可见");
+        assertThat(systemOutRule.getLog()).contains("get可见");
     }
 
 
     /**
-     * 结果：get可见</br>
-     * 外围方法开启事务，addRequired和外围方法同事务，getNotSuppored不支持事务，并将外围事务挂起，getNotSuppored不在addRequired事务范围中，由于事务隔离性，getNotSuppored看不到addRequired的执行结果。
-     * ，get属于外围事务，故可见addRequired执行之后的结果。
+     * 结果：get可见,getNotSupported不可见<br>
+     * 外围方法开启事务，addRequired和外围方法同事务，getNotSuppored不支持事务，并将外围事务挂起，getNotSuppored不在addRequired事务范围中。<br>
+     * 由于事务隔离性，getNotSuppored看不到addRequired的执行结果。，get属于外围事务，故可见addRequired执行之后的结果。
      */
     @Test
     public void testTransaction_addRequired_getNotSuppored_get() {
         try {
             transactionPropagationExample.transaction_addRequired_getNotSuppored_get();
-
         } catch (Exception e) {
         }
+        assertThat(systemOutRule.getLog()).doesNotContain("getNotSupported可见");
+        assertThat(systemOutRule.getLog()).contains("get可见");
     }
 
 
     /**
-     * 结果：get可见</br>
+     * 结果：get可见,getRequiresNew不可见<br>
      * 外围方法开启事务，addRequired和外围方法同事务，getRequiresNew新开事务，并将外围事务挂起，由于事务隔离性，getRequiresNew看不到addRequired的执行结果。
      * ，get属于外围事务，故可见addRequired执行之后的结果。
      */
@@ -676,9 +686,10 @@ public class SpringBootTransactionStudyApplicationTests {
     public void testTransaction_addRequired_getRequiresNew_get() {
         try {
             transactionPropagationExample.transaction_addRequired_getRequiresNew_get();
-
         } catch (Exception e) {
         }
+        assertThat(systemOutRule.getLog()).doesNotContain("getRequiresNew可见");
+        assertThat(systemOutRule.getLog()).contains("get可见");
     }
 
     //------------------------------------------------------------------------------

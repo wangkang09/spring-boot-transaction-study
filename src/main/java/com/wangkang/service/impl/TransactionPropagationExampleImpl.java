@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @SuppressWarnings("all")
 public class TransactionPropagationExampleImpl implements TransactionPropagationExample {
@@ -97,13 +99,13 @@ public class TransactionPropagationExampleImpl implements TransactionPropagation
 		User1 user1=new User1();
 		user1.setName("张三");
 		user1Service.addRequired(user1);
-		User1 temp1=user1Service.getRequired(1);
-		if(temp1!=null){
+		List<User1> temp1 = user1Service.getRequired("张三");
+		if(temp1.size()==1 && temp1.get(0).getName().equals("张三")){
 			System.out.println("getRequired可见");
 		}
-		User1 temp2=user1Service.get(1);
-		
-		if(temp2!=null){
+
+		temp1 = user1Service.get("张三");
+		if(temp1.size()==1 && temp1.get(0).getName().equals("张三")){
 			System.out.println("get可见");
 		}
 	}
@@ -180,18 +182,16 @@ public class TransactionPropagationExampleImpl implements TransactionPropagation
 		User1 user1=new User1();
 		user1.setName("张三");
 		user1Service.addRequired(user1);
-		
-		User1 temp1=user1Service.getRequired(1);
-		if(temp1!=null){
+
+		List<User1> temp1 = user1Service.getRequired("张三");
+		if(temp1.size()==1 && temp1.get(0).getName().equals("张三")){
 			System.out.println("getRequired可见");
 		}
-		User1 temp2=user1Service.get(1);
-		
-		if(temp2!=null){
+
+		temp1 = user1Service.get("张三");
+		if(temp1.size()==1 && temp1.get(0).getName().equals("张三")){
 			System.out.println("get可见");
 		}
-		
-	
 	}
 	
 	@Override
@@ -200,14 +200,14 @@ public class TransactionPropagationExampleImpl implements TransactionPropagation
 		User1 user1=new User1();
 		user1.setName("张三");
 		user1Service.addRequired(user1);
-		
-		User1 temp1=user1Service.getNested(1);
-		if(temp1!=null){
+
+		List<User1> temp1 = user1Service.getNested("张三");
+		if(temp1.size()==1 && temp1.get(0).getName().equals("张三")){
 			System.out.println("getNested可见");
 		}
-		User1 temp2=user1Service.get(1);
-		
-		if(temp2!=null){
+
+		temp1 = user1Service.get("张三");
+		if(temp1.size()==1 && temp1.get(0).getName().equals("张三")){
 			System.out.println("get可见");
 		}
 	}
@@ -350,14 +350,14 @@ public class TransactionPropagationExampleImpl implements TransactionPropagation
 		User1 user1=new User1();
 		user1.setName("张三");
 		user1Service.addRequired(user1);
-		
-		User1 temp1=user1Service.getRequiresNew(1);
-		if(temp1!=null){
+
+		List<User1> temp1 = user1Service.getRequiresNew("张三");
+		if(temp1.size()==1 && temp1.get(0).getName().equals("张三")){
 			System.out.println("getRequiresNew可见");
 		}
-		User1 temp2=user1Service.get(1);
-		
-		if(temp2!=null){
+
+		temp1 = user1Service.get("张三");
+		if(temp1.size()==1 && temp1.get(0).getName().equals("张三")){
 			System.out.println("get可见");
 		}
 	}	
@@ -419,13 +419,13 @@ public class TransactionPropagationExampleImpl implements TransactionPropagation
 		user1.setName("张三");
 		user1Service.addRequired(user1);
 		
-		User1 temp1=user1Service.getNotSupported(1);
-		if(temp1!=null){
-			System.out.println("getRequired可见");
+		List<User1> temp1 = user1Service.getNotSupported("张三");
+		if(temp1.size()==1 && temp1.get(0).getName().equals("张三")){
+			System.out.println("getNotSupported可见");
 		}
-		User1 temp2=user1Service.get(1);
-		
-		if(temp2!=null){
+
+		temp1 = user1Service.get("张三");
+		if(temp1.size()==1 && temp1.get(0).getName().equals("张三")){
 			System.out.println("get可见");
 		}
 	}	

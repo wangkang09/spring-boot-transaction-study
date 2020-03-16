@@ -3,6 +3,8 @@ package com.wangkang.service;
 
 import com.wangkang.entity.User1;
 
+import java.util.List;
+
 public interface User1Service {
 
 	void addRequired(User1 user);
@@ -39,14 +41,12 @@ public interface User1Service {
 
 	void addNestedException(User1 user);
 
-	User1 get(Integer id);
+	List<User1> get(String name);
+	List<User1> getRequired(String name);
+	List<User1> getRequiresNew(String name);
 
-	User1 getRequired(Integer id);
+	List<User1> getNested(String name);
 
-	User1 getRequiresNew(Integer id);
-
-	User1 getNested(Integer id);
-
-	User1 getNotSupported(Integer id);
+	List<User1> getNotSupported(String name);
 
 }
