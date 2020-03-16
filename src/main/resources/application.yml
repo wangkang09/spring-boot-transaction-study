@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    schema: classpath*:db/schema.sql,classpath*:db/schemaSlave.sql
+logging:
+  level:
+    org.springframework.jdbc.datasource.init: debug
+    sql: debug
+    org.springframework.transaction.interceptor.TransactionAspectSupport: debug
+    org.springframework.transaction.support.AbstractPlatformTransactionManager: debug
+    org.springframework.jdbc.datasource.DataSourceTransactionManager: debug
+    org.mybatis.spring.SqlSessionUtils: debug
+    org.springframework.jdbc.datasource.DataSourceUtils: debug
+    com.wangkang: debug
+mybatis:
+  mapper-locations: classpath*:*.xml
