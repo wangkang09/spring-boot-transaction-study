@@ -55,4 +55,10 @@ public interface PropagationTestMapper {
     @Transactional(propagation = Propagation.NEVER)
     @Select("select count(*) from user1")
     int NEVER();
+
+    @Select("select count(*) from user1")
+    int null0();
+
+    @Select("select count(*) from user1")
+    int NULL0();
 }
