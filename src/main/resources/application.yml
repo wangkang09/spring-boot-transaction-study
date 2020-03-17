@@ -11,5 +11,5 @@ logging:
     org.mybatis.spring.SqlSessionUtils: debug
     org.springframework.jdbc.datasource.DataSourceUtils: debug
     com.wangkang: debug
-mybatis:
-  mapper-locations: classpath*:*.xml
+#mybatis:
+#  mapper-locations: classpath*:*.xml

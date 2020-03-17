@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @Modified By:
  */
 @Service
+@SuppressWarnings("all")
 public class PropagationTestService {
     @Autowired
     PropagationTestMapper mapper;
